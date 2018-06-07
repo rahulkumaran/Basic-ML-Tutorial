@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import seaborn as sb
 import matplotlib.pyplot as plt
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.cross_validation import train_test_split
 from sklearn.metrics import confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
@@ -10,7 +10,7 @@ from sklearn.ensemble import BaggingClassifier, AdaBoostClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.cluster import KMeans
-
+from sklearn.naive_bayes import GaussianNB
 
 #--------------------------------------------------- READING THE DATASET -------------------------------------
 data = pd.read_csv("Loan_Train.csv")
@@ -57,10 +57,10 @@ lr = LinearRegression()
 model = lr.fit(train_x, train_y)
 pred = model.predict(test_x)
 conf = confusion_matrix(test_y, pred>=0.5)
-pred_test = model.predict(test_inp)
-pred_test = np.where(pred_test>=0.5, 'Y', 'N')
+#pred_test = model.predict(test_inp)
+#pred_test = np.where(pred_test>=0.5, 'Y', 'N')
 #print(pred_test)
-#print(conf)
+print(conf)
 
 #--------------------------------------------------  RANDOM FOREST APPLIED ------------------------------------
 
@@ -100,5 +100,24 @@ model = kmeans.fit(k_inp)
 pred_kmeans = kmeans.predict(k_inp)
 conf_k = confusion_matrix(k_inp[['Loan_Status']],pred_kmeans>=0.5)
 #print(conf_k)
+
+
+#---------------------------------------------- LOGISTIC REGRESSION APPLIED -----------------------------------
+log = LogisticRegression()
+model_log = log.fit(train_x, train_y)
+pred_log = model_log.predict(test_x)
+conf_log = confusion_matrix(test_y, pred_log)
+print(conf_log)
+
+
+#---------------------------------------------- NAIVE BAYES CLASSIFIER APPLIED --------------------------------
+nb = GaussianNB()
+model_nb = nb.fit(train_x,train_y)
+pred_nb = nb.predict(test_x)
+conf_nb = confusion_matrix(test_y, pred_nb)
+print(conf_nb)
+
+
+
 
 
